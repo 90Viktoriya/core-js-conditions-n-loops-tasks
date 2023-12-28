@@ -341,8 +341,36 @@ function getBalanceIndex(arr) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const result = [];
+  let count = 1;
+  let cicle = 1;
+  for (let i = 0; i < size; i += 1) {
+    result[i] = new Array(size);
+    for (let j = 0; j < size; j += 1) {
+      result[i][j] = 0;
+    }
+  }
+  while (count - 1 < size * size) {
+    for (let i = cicle - 1; i <= size - cicle; i += 1) {
+      result[cicle - 1][i] = count;
+      count += 1;
+    }
+    for (let j = cicle; j <= size - cicle; j += 1) {
+      result[j][size - cicle] = count;
+      count += 1;
+    }
+    for (let i = size - cicle - 1; i >= cicle - 1; i -= 1) {
+      result[size - cicle][i] = count;
+      count += 1;
+    }
+    for (let j = size - cicle - 1; j >= cicle; j -= 1) {
+      result[j][cicle - 1] = count;
+      count += 1;
+    }
+    cicle += 1;
+  }
+  return result;
 }
 
 /**
@@ -360,8 +388,22 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const result = [];
+  const size = matrix.length;
+  let line;
+  for (let i = 0; i < size; i += 1) {
+    line = [];
+    for (let j = 0; j < size; j += 1) {
+      line[j] = matrix[size - j - 1][i];
+    }
+    result[i] = line;
+  }
+  const result2 = matrix;
+  for (let i = 0; i < size; i += 1) {
+    result2[i] = result[i];
+  }
+  return result2;
 }
 
 /**
@@ -378,8 +420,51 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function merge(left, right) {
+  const result = [];
+  let indexleft = 0;
+  let indexright = 0;
+  let index = 0;
+  while (indexleft < left.length && indexright < right.length) {
+    if (left[indexleft] < right[indexright]) {
+      result[index] = left[indexleft];
+      index += 1;
+      indexleft += 1;
+    } else {
+      result[index] = right[indexright];
+      index += 1;
+      indexright += 1;
+    }
+  }
+  while (indexleft < left.length) {
+    result[index] = left[indexleft];
+    index += 1;
+    indexleft += 1;
+  }
+  while (indexright < right.length) {
+    result[index] = right[indexright];
+    index += 1;
+    indexright += 1;
+  }
+  return result;
+}
+
+function sortByAsc(arr) {
+  if (arr.length <= 1) return arr;
+  const middle = Math.floor(arr.length / 2);
+  let left = [];
+  let right = [];
+  let result = [];
+  for (let i = 0; i < middle; i += 1) left[i] = arr[i];
+  for (let j = middle; j < arr.length; j += 1) right[j - middle] = arr[j];
+  left = sortByAsc(left);
+  right = sortByAsc(right);
+  result = merge(left, right);
+  const result2 = arr;
+  for (let i = 0; i < arr.length; i += 1) {
+    result2[i] = result[i];
+  }
+  return result2;
 }
 
 /**
@@ -399,8 +484,20 @@ function sortByAsc(/* arr */) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  let result = str;
+  let result2 = '';
+  let strEnd = '';
+  for (let j = 0; j < iterations; j += 1) {
+    for (let i = 1; i < str.length; i += 2) {
+      strEnd += result[i];
+      result2 += result[i - 1];
+    }
+    result = result2 + strEnd;
+    result2 = '';
+    strEnd = '';
+  }
+  return result;
 }
 
 /**
@@ -420,8 +517,32 @@ function shuffleChar(/* str, iterations */) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const str = String(number);
+  let arr = [];
+  let result = '';
+  for (let i = str.length - 1; i > 0; i -= 1) {
+    if (str[i] > str[i - 1]) {
+      for (let j = 0; j < i - 1; j += 1) {
+        result += str[j];
+      }
+      arr.push(str[i - 1]);
+      arr.push(str[i]);
+      arr = sortByAsc(arr);
+      let index = 1;
+      let temp = arr[0];
+      while (arr[index] === arr[0] || arr[index] === str[i - 1]) {
+        temp += arr[index];
+        index += 1;
+      }
+      result += arr[index] + temp;
+      arr.splice(0, index + 1);
+      result += arr.join('');
+      return Number(result);
+    }
+    arr.push(str[i]);
+  }
+  return number;
 }
 
 module.exports = {
