@@ -488,18 +488,31 @@ function shuffleChar(str, iterations) {
   let result = str;
   let result2 = '';
   let strEnd = '';
-  for (let j = 0; j < iterations % 6; j += 1) {
+  let repeat = 0;
+  for (let j = 0; j < iterations; j += 1) {
     for (let i = 1; i < str.length; i += 2) {
       strEnd += result[i];
       result2 += result[i - 1];
     }
+    if (str.length % 2 !== 0) result2 += result[str.length - 1];
+    result = result2 + strEnd;
+    result2 = '';
+    strEnd = '';
+    repeat += 1;
+    if (result === str) break;
+  }
+  for (let j = 0; j < iterations % repeat; j += 1) {
+    for (let i = 1; i < str.length; i += 2) {
+      strEnd += result[i];
+      result2 += result[i - 1];
+    }
+    if (str.length % 2 !== 0) result2 += result[str.length - 1];
     result = result2 + strEnd;
     result2 = '';
     strEnd = '';
   }
   return result;
 }
-
 /**
  * Returns the nearest largest integer consisting of the digits of the given positive integer.
  * If there is no such number, it returns the original number.
