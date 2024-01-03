@@ -488,7 +488,7 @@ function shuffleChar(str, iterations) {
   let result = str;
   let result2 = '';
   let strEnd = '';
-  for (let j = 0; j < iterations; j += 1) {
+  for (let j = 0; j < iterations % 6; j += 1) {
     for (let i = 1; i < str.length; i += 2) {
       strEnd += result[i];
       result2 += result[i - 1];
